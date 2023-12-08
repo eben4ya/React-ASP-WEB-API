@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 
 const Data = () => {
   const [data, setData] = useState([]);
+  const [openForm, setOpenFormt] = useState(true);
 
   useEffect(() => {
     GetAllTask();
@@ -20,6 +21,22 @@ const Data = () => {
         console.log(err);
       });
   };
+
+  const CreateTask = (e) => {
+    e.preventDefault();
+    axios
+      .post("https://localhost:7189/api/Todos", {
+        quest: "Belajar React",
+        desc: "Belajar React",
+        dl: "2021-10-10",
+      })
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   // ================ CARA 2 ================
   // pakai fetch doang trus fungsinya dimasukin useEffect
@@ -48,18 +65,87 @@ const Data = () => {
   // ================ CARA 2 ================
 
   return (
-    <section>
-      <p className="text-red-500">Data dari MongoDB : </p>
-      {/* <p>{JSON.stringify(data)}</p> */}
+    <>
+      {openForm ? (
+        <section className="flex flex-col max-w-[600px] max-h-[400px] p-2 gap-y-4 bg-white rounded-xl overflow-y-scroll">
+          <button
+            className="px-4 py-2 bg-blue-500 w-fit rounded-full text-white "
+            onClick={() => setOpenFormt((prev) => !prev)}
+          >
+            Create Quest
+          </button>
+          <h1 className="text-black text-center text-3xl">
+            Data dari MongoDB :
+          </h1>
+          {/* <p>{JSON.stringify(data)}</p> */}
 
-      <ul>
-        {data.map((item, index) => (
-          <li className="text-red-500" key={index}>
-            {item.quest} - {item.desc}
-          </li>
-        ))}
-      </ul>
-    </section>
+          <table>
+            <thead>
+              <th>Quest</th>
+              <th>Desc</th>
+              <th>Deadline</th>
+            </thead>
+            <tbody>
+              {data.map((item, index) => (
+                <tr key={index}>
+                  <td> {item.quest} </td>
+                  <td> {item.desc} </td>
+                  <td> {item.dl} </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+      ) : (
+        <section className="flex flex-col max-w-[600px] max-h-[400px] p-2 gap-y-4 bg-white rounded-xl">
+          <h1>Create Quest</h1>
+          <form>
+            <div className="flex space-x-4">
+              <label htmlFor="quest">Quest</label>
+              <input
+                className="border rounded p-2"
+                type="text"
+                id="quest"
+                placeholder="add quest"
+              />
+            </div>
+            <div className="flex space-x-4">
+              <label htmlFor="desc">Description</label>
+              <input
+                className="border rounded p-2"
+                type="text"
+                id="desc"
+                placeholder="add desc"
+              />
+            </div>
+            <div className="flex space-x-4">
+              <label htmlFor="dl">Deadline</label>
+              <input
+                className="border rounded p-2"
+                type="datetime-local"
+                id="dl"
+                placeholder="add deadline"
+              />
+            </div>
+            <div>
+              <button
+                type="submit"
+                className="px-4 py-2 bg-blue-500 w-fit rounded-full text-white"
+                onClick={CreateTask}
+              >
+                Submit
+              </button>
+              <button
+                onClick={() => setOpenFormt((prev) => !prev)}
+                className="px-4 py-2 bg-blue-500 w-fit rounded-full text-white"
+              >
+                View Quest
+              </button>
+            </div>
+          </form>
+        </section>
+      )}
+    </>
   );
 };
 
