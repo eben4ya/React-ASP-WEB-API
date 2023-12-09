@@ -1,10 +1,13 @@
 import React from "react";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const Data = () => {
   const [data, setData] = useState([]);
   const [openForm, setOpenFormt] = useState(true);
+  const questRef = useRef(null);
+  const descRef = useRef(null);
+  const dlRef = useRef(null);
 
   useEffect(() => {
     GetAllTask();
@@ -22,20 +25,25 @@ const Data = () => {
       });
   };
 
-  const CreateTask = (e) => {
-    e.preventDefault();
-    axios
-      .post("https://localhost:7189/api/Todos", {
-        quest: "Belajar React",
-        desc: "Belajar React",
-        dl: "2021-10-10",
-      })
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((err) => {
-        console.log(err);
+  const CreateTask = async (e) => {
+    // e.preventDefault();
+    // const options = {
+    //   timeZone: "Asia/Jakarta",
+    //   hour12: false,
+    // };
+    // const WIB = new Date().toLocaleString("en-GB", options);
+
+    try {
+      const response = await axios.post("https://localhost:7189/api/Todos", {
+        quest: questRef.current.value,
+        desc: descRef.current.value,
+        // dl: WIB,
+        dl: dlRef.current.value,
       });
+      console.log(response.data);
+    } catch (err) {
+      console.error("Error:", err);
+    }
   };
 
   // ================ CARA 2 ================
@@ -79,17 +87,17 @@ const Data = () => {
           </h1>
           {/* <p>{JSON.stringify(data)}</p> */}
 
-          <table className="border-separate border-spacing-x-8">
+          <table className="border-separate border-spacing-x-4">
             <thead>
-              <th >Quest</th>
-              <th >Desc</th>
+              <th>Quest</th>
+              <th>Desc</th>
               <th>Deadline</th>
             </thead>
             <tbody>
               {data.map((item, index) => (
-                <tr  key={index}>
-                  <td > {item.quest} </td>
-                  <td > {item.desc} </td>
+                <tr key={index}>
+                  <td> {item.quest} </td>
+                  <td> {item.desc} </td>
                   <td> {item.dl} </td>
                 </tr>
               ))}
@@ -112,18 +120,21 @@ const Data = () => {
                   type="text"
                   id="quest"
                   placeholder="add quest"
+                  ref={questRef}
                 />
                 <input
                   className="text-black border rounded p-2"
                   type="text"
                   id="desc"
                   placeholder="add desc"
+                  ref={descRef}
                 />
                 <input
                   className="text-black border rounded p-2"
                   type="datetime-local"
                   id="dl"
                   placeholder="add deadline"
+                  ref={dlRef}
                 />
               </div>
             </div>
