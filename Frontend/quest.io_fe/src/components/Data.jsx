@@ -75,7 +75,7 @@ const Data = () => {
   return (
     <>
       {openForm ? (
-        <section className="flex flex-col max-w-[600px] max-h-[400px] p-2 gap-y-4 bg-blue-300 rounded-xl overflow-y-scroll">
+        <section className="relative z-[99999999] flex flex-col max-w-[600px] max-h-[400px] p-2 gap-y-4 bg-blue-300 rounded-xl overflow-y-scroll">
           <button
             className="px-4 py-2 bg-blue-500 w-fit rounded-full text-white "
             onClick={() => setOpenFormt((prev) => !prev)}
@@ -105,7 +105,7 @@ const Data = () => {
           </table>
         </section>
       ) : (
-        <section className="flex flex-col max-w-[600px] max-h-[400px] p-2 gap-y-4 bg-blue-300 rounded-xl">
+        <section className="relative z-[99999999] flex flex-col max-w-[600px] max-h-[400px] p-2 gap-y-4 bg-blue-300 rounded-xl">
           <h1 className="">Create Quest</h1>
           <form className="flex flex-col space-y-8">
             <div className="flex space-x-4">
