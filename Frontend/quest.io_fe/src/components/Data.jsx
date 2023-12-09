@@ -36,7 +36,7 @@ const Data = () => {
       .catch((err) => {
         console.log(err);
       });
-  }
+  };
 
   // ================ CARA 2 ================
   // pakai fetch doang trus fungsinya dimasukin useEffect
@@ -67,7 +67,7 @@ const Data = () => {
   return (
     <>
       {openForm ? (
-        <section className="flex flex-col max-w-[600px] max-h-[400px] p-2 gap-y-4 bg-white rounded-xl overflow-y-scroll">
+        <section className="flex flex-col max-w-[600px] max-h-[400px] p-2 gap-y-4 bg-blue-300 rounded-xl overflow-y-scroll">
           <button
             className="px-4 py-2 bg-blue-500 w-fit rounded-full text-white "
             onClick={() => setOpenFormt((prev) => !prev)}
@@ -79,17 +79,17 @@ const Data = () => {
           </h1>
           {/* <p>{JSON.stringify(data)}</p> */}
 
-          <table>
+          <table className="border-separate border-spacing-x-8">
             <thead>
-              <th>Quest</th>
-              <th>Desc</th>
+              <th >Quest</th>
+              <th >Desc</th>
               <th>Deadline</th>
             </thead>
             <tbody>
               {data.map((item, index) => (
-                <tr key={index}>
-                  <td> {item.quest} </td>
-                  <td> {item.desc} </td>
+                <tr  key={index}>
+                  <td > {item.quest} </td>
+                  <td > {item.desc} </td>
                   <td> {item.dl} </td>
                 </tr>
               ))}
@@ -97,40 +97,41 @@ const Data = () => {
           </table>
         </section>
       ) : (
-        <section className="flex flex-col max-w-[600px] max-h-[400px] p-2 gap-y-4 bg-white rounded-xl">
-          <h1>Create Quest</h1>
-          <form>
+        <section className="flex flex-col max-w-[600px] max-h-[400px] p-2 gap-y-4 bg-blue-300 rounded-xl">
+          <h1 className="">Create Quest</h1>
+          <form className="flex flex-col space-y-8">
             <div className="flex space-x-4">
-              <label htmlFor="quest">Quest</label>
-              <input
-                className="border rounded p-2"
-                type="text"
-                id="quest"
-                placeholder="add quest"
-              />
+              <div className="flex flex-col space-y-10">
+                <label htmlFor="quest">Quest</label>
+                <label htmlFor="desc">Description</label>
+                <label htmlFor="dl">Deadline</label>
+              </div>
+              <div className="flex flex-col space-y-4">
+                <input
+                  className="text-black border rounded p-2"
+                  type="text"
+                  id="quest"
+                  placeholder="add quest"
+                />
+                <input
+                  className="text-black border rounded p-2"
+                  type="text"
+                  id="desc"
+                  placeholder="add desc"
+                />
+                <input
+                  className="text-black border rounded p-2"
+                  type="datetime-local"
+                  id="dl"
+                  placeholder="add deadline"
+                />
+              </div>
             </div>
-            <div className="flex space-x-4">
-              <label htmlFor="desc">Description</label>
-              <input
-                className="border rounded p-2"
-                type="text"
-                id="desc"
-                placeholder="add desc"
-              />
-            </div>
-            <div className="flex space-x-4">
-              <label htmlFor="dl">Deadline</label>
-              <input
-                className="border rounded p-2"
-                type="datetime-local"
-                id="dl"
-                placeholder="add deadline"
-              />
-            </div>
+
             <div>
               <button
                 type="submit"
-                className="px-4 py-2 bg-blue-500 w-fit rounded-full text-white"
+                className="px-4 py-2 mr-8 bg-blue-500 w-fit rounded-full text-white"
                 onClick={CreateTask}
               >
                 Submit

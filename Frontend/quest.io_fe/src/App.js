@@ -5,7 +5,16 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Data/>
+        <main
+          style={{
+            background: "url(/img/bg-QuestIo.png)",
+            backgroundSize: "cover",
+          }}
+          className="w-screen h-screen flex justify-center items-center"
+        >
+         
+          <Data />
+        </main>
       </header>
     </div>
   );
