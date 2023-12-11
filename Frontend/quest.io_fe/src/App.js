@@ -1,37 +1,49 @@
 import "./App.css";
+import { useState, useEffect, Suspense, lazy } from "react";
 import Data from "./components/Data";
-import { useState } from "react";
+// const Data = lazy(() => import("./components/Data")); // cannot impot lazy to component that fetch data
+const Loading = lazy(() => import("./components/Loading")); // suspense fallback dont work in react or maybe i am wrong
 
 function App() {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, [3000]);
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
+    <>
+      {loading ? (
+        <Loading />
+      ) : (
         <main
           style={{
             background: "url(/img/bg-QuestIo.png)",
             backgroundSize: "cover",
           }}
-          className="relative w-screen h-screen flex justify-center items-center"
+          className="relative flex h-screen w-screen items-center justify-center"
         >
           <img
             src="/img/login.png"
-            className="absolute top-[31px] left-[40px] w-[434px] h-[108px] hover:scale-105 "
+            className="absolute left-[40px] top-[31px] h-[108px] w-[434px] hover:scale-105 "
             alt="login"
           />
           <img
             src="/img/absolute monas.png"
-            className="absolute top-[196px] right-0 w-[206px] h-[239px] brightness-90 hover:brightness-100 hover:scale-105 "
+            className="absolute right-0 top-[196px] h-[239px] w-[206px] brightness-90 hover:scale-105 hover:brightness-100 "
             alt="login"
           />
           <img
             src="/img/absolute padang.png"
-            className="absolute top-[374px] left-0 w-[239px] h-[96px] brightness-90 hover:brightness-100 hover:scale-105 "
+            className="absolute left-0 top-[374px] h-[96px] w-[239px] brightness-90 hover:scale-105 hover:brightness-100 "
             alt="login"
           />
           <img
             src="/img/absolute todo.png"
-            className="absolute top-[273px] left-[505px] w-[179px] h-[486px] brightness-90 hover:brightness-100 hover:scale-105 "
+            className="absolute left-[505px] top-[273px] h-[486px] w-[179px] brightness-90 hover:scale-105 hover:brightness-100 "
             alt="login"
             onClick={() => setOpen(!open)}
           />
@@ -39,7 +51,7 @@ function App() {
             <>
               <Data />
               <button
-                className="absolute bottom-1/2 translate-y-[300px]  py-2 px-4 w-fit bg-blue-500 rounded-full  "
+                className="absolute bottom-1/2 w-fit translate-y-[300px] rounded-full bg-blue-500 px-4 py-2  "
                 onClick={() => setOpen(!open)}
               >
                 Close
@@ -47,8 +59,8 @@ function App() {
             </>
           ) : null}
         </main>
-      </header>
-    </div>
+      )}
+    </>
   );
 }
 

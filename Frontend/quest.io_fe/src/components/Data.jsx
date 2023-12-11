@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
+import { FaPen, FaTrash } from "react-icons/fa";
 
 const Data = () => {
   const [data, setData] = useState([]);
@@ -75,14 +76,14 @@ const Data = () => {
   return (
     <>
       {openForm ? (
-        <section className="relative z-[99999999] flex flex-col max-w-[600px] max-h-[400px] p-2 gap-y-4 bg-blue-300 rounded-xl overflow-y-scroll">
+        <section className="relative z-[99999999] flex max-h-[400px] max-w-[600px] flex-col gap-y-4 overflow-y-scroll rounded-xl bg-blue-300 p-2">
           <button
-            className="px-4 py-2 bg-blue-500 w-fit rounded-full text-white "
+            className="w-fit rounded-full bg-blue-500 px-4 py-2 text-white "
             onClick={() => setOpenFormt((prev) => !prev)}
           >
             Create Quest
           </button>
-          <h1 className="text-black text-center text-3xl">
+          <h1 className="text-center text-3xl text-black">
             Data dari MongoDB :
           </h1>
           {/* <p>{JSON.stringify(data)}</p> */}
@@ -99,13 +100,19 @@ const Data = () => {
                   <td> {item.quest} </td>
                   <td> {item.desc} </td>
                   <td> {item.dl} </td>
+                  <td>
+                    <FaPen />
+                  </td>
+                  <td>
+                    <FaTrash />
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </section>
       ) : (
-        <section className="relative z-[99999999] flex flex-col max-w-[600px] max-h-[400px] p-2 gap-y-4 bg-blue-300 rounded-xl">
+        <section className="relative z-[99999999] flex max-h-[400px] max-w-[600px] flex-col gap-y-4 rounded-xl bg-blue-300 p-2">
           <h1 className="">Create Quest</h1>
           <form className="flex flex-col space-y-8">
             <div className="flex space-x-4">
@@ -116,21 +123,21 @@ const Data = () => {
               </div>
               <div className="flex flex-col space-y-4">
                 <input
-                  className="text-black border rounded p-2"
+                  className="rounded border p-2 text-black"
                   type="text"
                   id="quest"
                   placeholder="add quest"
                   ref={questRef}
                 />
                 <input
-                  className="text-black border rounded p-2"
+                  className="rounded border p-2 text-black"
                   type="text"
                   id="desc"
                   placeholder="add desc"
                   ref={descRef}
                 />
                 <input
-                  className="text-black border rounded p-2"
+                  className="rounded border p-2 text-black"
                   type="datetime-local"
                   id="dl"
                   placeholder="add deadline"
@@ -142,14 +149,14 @@ const Data = () => {
             <div>
               <button
                 type="submit"
-                className="px-4 py-2 mr-8 bg-blue-500 w-fit rounded-full text-white"
+                className="mr-8 w-fit rounded-full bg-blue-500 px-4 py-2 text-white"
                 onClick={CreateTask}
               >
                 Submit
               </button>
               <button
                 onClick={() => setOpenFormt((prev) => !prev)}
-                className="px-4 py-2 bg-blue-500 w-fit rounded-full text-white"
+                className="w-fit rounded-full bg-blue-500 px-4 py-2 text-white"
               >
                 View Quest
               </button>
