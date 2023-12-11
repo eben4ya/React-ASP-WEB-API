@@ -26,27 +26,6 @@ const Data = () => {
       });
   };
 
-  const CreateTask = async (e) => {
-    // e.preventDefault();
-    // const options = {
-    //   timeZone: "Asia/Jakarta",
-    //   hour12: false,
-    // };
-    // const WIB = new Date().toLocaleString("en-GB", options);
-
-    try {
-      const response = await axios.post("https://localhost:7189/api/Todos", {
-        quest: questRef.current.value,
-        desc: descRef.current.value,
-        // dl: WIB,
-        dl: dlRef.current.value,
-      });
-      console.log(response.data);
-    } catch (err) {
-      console.error("Error:", err);
-    }
-  };
-
   // ================ CARA 2 ================
   // pakai fetch doang trus fungsinya dimasukin useEffect
 
@@ -72,6 +51,53 @@ const Data = () => {
   // };
 
   // ================ CARA 2 ================
+
+  const CreateTask = async (e) => {
+    // e.preventDefault();
+    // const options = {
+    //   timeZone: "Asia/Jakarta",
+    //   hour12: false,
+    // };
+    // const WIB = new Date().toLocaleString("en-GB", options);
+
+    try {
+      const response = await axios.post("https://localhost:7189/api/Todos", {
+        quest: questRef.current.value,
+        desc: descRef.current.value,
+        // dl: WIB,
+        dl: dlRef.current.value,
+      });
+      console.log(response.data);
+    } catch (err) {
+      console.error("Error creating data :", err);
+    }
+  };
+
+  // const updateData = async (id, updatedValue) => {
+  //   try {
+  //     await axios.put(`https://api.example.com/data/${id}`, {
+  //       value: updatedValue,
+  //     });
+  //     fetchData();
+  //   } catch (error) {
+  //     console.error("Error updating data:", error);
+  //   }
+  // };
+
+  const DeleteTask = async (id) => {
+    const result = window.confirm("Are you sure want to delete this task?");
+    if (result) {
+      try {
+        const response = await axios.delete(
+          `https://localhost:7189/api/Todos/${id}`,
+        );
+        GetAllTask();
+        console.log(response.data);
+      } catch (err) {
+        console.error("Error deleting data : ", err);
+      }
+    }
+  };
 
   return (
     <>
@@ -104,7 +130,7 @@ const Data = () => {
                     <FaPen />
                   </td>
                   <td>
-                    <FaTrash />
+                    <FaTrash onClick={() => DeleteTask(item.id)} />
                   </td>
                 </tr>
               ))}
