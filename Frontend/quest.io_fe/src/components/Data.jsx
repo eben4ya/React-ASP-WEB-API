@@ -5,10 +5,15 @@ import { FaPen, FaTrash } from "react-icons/fa";
 
 const Data = () => {
   const [data, setData] = useState([]);
-  const [openForm, setOpenFormt] = useState(true);
-  const questRef = useRef(null);
-  const descRef = useRef(null);
-  const dlRef = useRef(null);
+  const [openForm, setOpenForm] = useState(true);
+  // const questRef = useRef(null);
+  // const descRef = useRef(null);
+  // const dlRef = useRef(null);
+  const [quest, setQuest] = useState("");
+  const [desc, setDesc] = useState("");
+  const [dl, setDl] = useState("");
+  const [edit, setEdit] = useState(false);
+  const [id, setId] = useState("");
 
   useEffect(() => {
     GetAllTask();
@@ -60,29 +65,69 @@ const Data = () => {
     // };
     // const WIB = new Date().toLocaleString("en-GB", options);
 
-    try {
-      const response = await axios.post("https://localhost:7189/api/Todos", {
-        quest: questRef.current.value,
-        desc: descRef.current.value,
-        // dl: WIB,
-        dl: dlRef.current.value,
-      });
-      console.log(response.data);
-    } catch (err) {
-      console.error("Error creating data :", err);
+    if (quest === "" || desc === "" || dl === "") {
+      alert("Please fill all the field");
+      e.preventDefault();
+    } else {
+      try {
+        const response = await axios.post("https://localhost:7189/api/Todos", {
+          quest: quest,
+          desc: desc,
+          // dl: WIB,
+          dl: dl,
+        });
+        console.log(response.data);
+        setQuest("");
+        setDesc("");
+        setDl("");
+      } catch (err) {
+        console.error("Error creating data :", err);
+      }
     }
   };
 
-  // const updateData = async (id, updatedValue) => {
-  //   try {
-  //     await axios.put(`https://api.example.com/data/${id}`, {
-  //       value: updatedValue,
-  //     });
-  //     fetchData();
-  //   } catch (error) {
-  //     console.error("Error updating data:", error);
-  //   }
-  // };
+  const Edit = (id, Quest, Desc, Dl) => {
+    setOpenForm((prev) => !prev);
+    setEdit(true); // menandakan bahwa kita sedang mengedit
+    // semua nilai di tag input di set sesuai dengan data yang akan di edit
+    setQuest(Quest);
+    setDesc(Desc);
+    setDl(Dl);
+    setId(id);
+  };
+
+  const UpdateTask = async (e, id) => {
+    if (quest === "" || desc === "" || dl === "") {
+      alert("Please fill all the field");
+      e.preventDefault();
+    } else {
+      const result = window.confirm("Are you sure want to update this task?");
+      if (result) {
+        try {
+          const response = await axios.put(
+            `https://localhost:7189/api/Todos/${id}`,
+            {
+              id: id, // id harus ditambahkan agar bisa di update
+              quest: quest,
+              desc: desc,
+              dl: dl,
+            },
+          );
+
+          console.log(response.data);
+          // semua value di tag input dan id di set ke kosong
+          setQuest("");
+          setDesc("");
+          setDl("");
+          setId("");
+        } catch (error) {
+          console.error("Error updating data:", error);
+        }
+      } else {
+        e.preventDefault();
+      }
+    }
+  };
 
   const DeleteTask = async (id) => {
     const result = window.confirm("Are you sure want to delete this task?");
@@ -99,13 +144,23 @@ const Data = () => {
     }
   };
 
+  const handleViewButton = () => {
+    setOpenForm((prev) => !prev);
+    setEdit(false); // menonaktifkan edit
+    // semua value di tag input dan id di set ke kosong
+    setQuest("");
+    setDesc("");
+    setDl("");
+    setId(""); // nilai id di set ke kosong agar tidak terjadi error tidak jadi mengedit
+  };
+
   return (
     <>
       {openForm ? (
         <section className="relative z-[99999999] flex max-h-[400px] max-w-[600px] flex-col gap-y-4 overflow-y-scroll rounded-xl bg-blue-300 p-2">
           <button
             className="w-fit rounded-full bg-blue-500 px-4 py-2 text-white "
-            onClick={() => setOpenFormt((prev) => !prev)}
+            onClick={() => setOpenForm((prev) => !prev)}
           >
             Create Quest
           </button>
@@ -127,7 +182,11 @@ const Data = () => {
                   <td> {item.desc} </td>
                   <td> {item.dl} </td>
                   <td>
-                    <FaPen />
+                    <FaPen
+                      onClick={() =>
+                        Edit(item.id, item.quest, item.desc, item.dl)
+                      }
+                    />
                   </td>
                   <td>
                     <FaTrash onClick={() => DeleteTask(item.id)} />
@@ -139,7 +198,7 @@ const Data = () => {
         </section>
       ) : (
         <section className="relative z-[99999999] flex max-h-[400px] max-w-[600px] flex-col gap-y-4 rounded-xl bg-blue-300 p-2">
-          <h1 className="">Create Quest</h1>
+          <h1 className="">{edit ? "Update quest" : " Create quest"}</h1>
           <form className="flex flex-col space-y-8">
             <div className="flex space-x-4">
               <div className="flex flex-col space-y-10">
@@ -153,21 +212,27 @@ const Data = () => {
                   type="text"
                   id="quest"
                   placeholder="add quest"
-                  ref={questRef}
+                  // ref={questRef}
+                  value={quest}
+                  onChange={(e) => setQuest(e.target.value)}
                 />
                 <input
                   className="rounded border p-2 text-black"
                   type="text"
                   id="desc"
                   placeholder="add desc"
-                  ref={descRef}
+                  // ref={descRef}
+                  value={desc}
+                  onChange={(e) => setDesc(e.target.value)}
                 />
                 <input
                   className="rounded border p-2 text-black"
                   type="datetime-local"
                   id="dl"
                   placeholder="add deadline"
-                  ref={dlRef}
+                  // ref={dlRef}
+                  value={dl}
+                  onChange={(e) => setDl(e.target.value)}
                 />
               </div>
             </div>
@@ -176,12 +241,12 @@ const Data = () => {
               <button
                 type="submit"
                 className="mr-8 w-fit rounded-full bg-blue-500 px-4 py-2 text-white"
-                onClick={CreateTask}
+                onClick={edit ? (e) => UpdateTask(e, id) : (e) => CreateTask(e)}
               >
-                Submit
+                {edit ? "Update" : "Create"}
               </button>
               <button
-                onClick={() => setOpenFormt((prev) => !prev)}
+                onClick={handleViewButton}
                 className="w-fit rounded-full bg-blue-500 px-4 py-2 text-white"
               >
                 View Quest
