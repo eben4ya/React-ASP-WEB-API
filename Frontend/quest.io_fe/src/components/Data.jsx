@@ -2,8 +2,9 @@ import React from "react";
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { FaPen, FaTrash } from "react-icons/fa";
+import { IoMdCloseCircleOutline } from "react-icons/io";
 
-const Data = () => {
+const Data = ({ onClick = "" }) => {
   const [data, setData] = useState([]);
   const [openForm, setOpenForm] = useState(true);
   // const questRef = useRef(null);
@@ -158,12 +159,15 @@ const Data = () => {
     <>
       {openForm ? (
         <section className="relative z-[99999999] flex max-h-[400px] max-w-[600px] flex-col gap-y-4 overflow-y-scroll rounded-xl bg-blue-300 p-2">
-          <button
-            className="w-fit rounded-full bg-blue-500 px-4 py-2 text-white "
-            onClick={() => setOpenForm((prev) => !prev)}
-          >
-            Create Quest
-          </button>
+          <div className="flex h-fit w-full justify-between ">
+            <button
+              className="w-fit rounded-full bg-blue-500 px-4 py-2 text-white "
+              onClick={() => setOpenForm((prev) => !prev)}
+            >
+              Create Quest
+            </button>
+            <IoMdCloseCircleOutline className="h-8 w-8" onClick={onClick} />
+          </div>
           <h1 className="text-center text-3xl text-black">
             Data dari MongoDB :
           </h1>
@@ -198,7 +202,12 @@ const Data = () => {
         </section>
       ) : (
         <section className="relative z-[99999999] flex max-h-[400px] max-w-[600px] flex-col gap-y-4 rounded-xl bg-blue-300 p-2">
-          <h1 className="">{edit ? "Update quest" : " Create quest"}</h1>
+          <div className="flex h-fit w-full justify-between">
+            <h1 className="text-2xl text-black">
+              {edit ? "Update quest" : " Create quest"}
+            </h1>
+            <IoMdCloseCircleOutline className="h-8 w-8" onClick={onClick} />
+          </div>
           <form className="flex flex-col space-y-8">
             <div className="flex space-x-4">
               <div className="flex flex-col space-y-10">

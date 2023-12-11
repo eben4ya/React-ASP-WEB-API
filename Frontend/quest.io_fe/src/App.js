@@ -30,16 +30,19 @@ function App() {
             src="/img/login.png"
             className="absolute left-[40px] top-[31px] h-[108px] w-[434px] hover:scale-105 "
             alt="login"
+            onClick={() => alert("Fitur sedang dalam pengembangan")}
           />
           <img
             src="/img/absolute monas.png"
             className="absolute right-0 top-[196px] h-[239px] w-[206px] brightness-90 hover:scale-105 hover:brightness-100 "
             alt="login"
+            onClick={() => alert("Fitur sedang dalam pengembangan")}
           />
           <img
             src="/img/absolute padang.png"
             className="absolute left-0 top-[374px] h-[96px] w-[239px] brightness-90 hover:scale-105 hover:brightness-100 "
             alt="login"
+            onClick={() => alert("Fitur sedang dalam pengembangan")}
           />
           <img
             src="/img/absolute todo.png"
@@ -49,13 +52,7 @@ function App() {
           />
           {open ? (
             <>
-              <Data />
-              <button
-                className="absolute bottom-1/2 w-fit translate-y-[300px] rounded-full bg-blue-500 px-4 py-2  "
-                onClick={() => setOpen(!open)}
-              >
-                Close
-              </button>
+              <Data onClick={() => setOpen(!open)} />
             </>
           ) : null}
         </main>
