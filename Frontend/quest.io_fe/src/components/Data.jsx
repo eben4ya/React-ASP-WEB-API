@@ -3,6 +3,8 @@ import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { FaPen, FaTrash } from "react-icons/fa";
 import { IoMdCloseCircleOutline } from "react-icons/io";
+import { GrCheckbox } from "react-icons/gr";
+import { GrCheckboxSelected } from "react-icons/gr";
 
 const Data = ({ onClick = "" }) => {
   const [data, setData] = useState([]);
@@ -15,6 +17,7 @@ const Data = ({ onClick = "" }) => {
   const [dl, setDl] = useState("");
   const [edit, setEdit] = useState(false);
   const [id, setId] = useState("");
+  const [isDone, setIsDone] = useState(false);
 
   useEffect(() => {
     GetAllTask();
@@ -76,24 +79,27 @@ const Data = ({ onClick = "" }) => {
           desc: desc,
           // dl: WIB,
           dl: dl,
+          done: isDone,
         });
         console.log(response.data);
         setQuest("");
         setDesc("");
         setDl("");
+        setIsDone(false);
       } catch (err) {
         console.error("Error creating data :", err);
       }
     }
   };
 
-  const Edit = (id, Quest, Desc, Dl) => {
+  const Edit = (id, Quest, Desc, Dl, Done) => {
     setOpenForm((prev) => !prev);
     setEdit(true); // menandakan bahwa kita sedang mengedit
     // semua nilai di tag input di set sesuai dengan data yang akan di edit
     setQuest(Quest);
     setDesc(Desc);
     setDl(Dl);
+    setIsDone(Done);
     setId(id);
   };
 
@@ -112,6 +118,7 @@ const Data = ({ onClick = "" }) => {
               quest: quest,
               desc: desc,
               dl: dl,
+              done: isDone,
             },
           );
 
@@ -121,6 +128,7 @@ const Data = ({ onClick = "" }) => {
           setDesc("");
           setDl("");
           setId("");
+          setIsDone(false);
         } catch (error) {
           console.error("Error updating data:", error);
         }
@@ -153,6 +161,7 @@ const Data = ({ onClick = "" }) => {
     setDesc("");
     setDl("");
     setId(""); // nilai id di set ke kosong agar tidak terjadi error tidak jadi mengedit
+    setIsDone(false);
   };
 
   return (
@@ -186,9 +195,17 @@ const Data = ({ onClick = "" }) => {
                   <td> {item.desc} </td>
                   <td> {item.dl} </td>
                   <td>
+                    {item.done ? (
+                      <GrCheckboxSelected className="" />
+                    ) : (
+                      <GrCheckbox className="" />
+                    )}
+                  </td>
+
+                  <td>
                     <FaPen
                       onClick={() =>
-                        Edit(item.id, item.quest, item.desc, item.dl)
+                        Edit(item.id, item.quest, item.desc, item.dl, item.done)
                       }
                     />
                   </td>
@@ -214,6 +231,7 @@ const Data = ({ onClick = "" }) => {
                 <label htmlFor="quest">Quest</label>
                 <label htmlFor="desc">Description</label>
                 <label htmlFor="dl">Deadline</label>
+                <label htmlFor="isDone">isDone</label>
               </div>
               <div className="flex flex-col space-y-4">
                 <input
@@ -242,6 +260,13 @@ const Data = ({ onClick = "" }) => {
                   // ref={dlRef}
                   value={dl}
                   onChange={(e) => setDl(e.target.value)}
+                />
+                <input
+                  className="h-8 w-8 "
+                  type="checkbox"
+                  checked={isDone}
+                  onChange={(e) => setIsDone(e.target.checked)}
+                  value={isDone}
                 />
               </div>
             </div>

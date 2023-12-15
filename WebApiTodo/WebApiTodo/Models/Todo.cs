@@ -20,6 +20,8 @@ namespace WebApiTodo.Models
         [BsonRepresentation(BsonType.DateTime)] // Represent DateTime as BSON DateTime
         public DateTime DL { get; set; } = DateTime.Now; // Set default value to current UTC time or any default value you prefer
 
+        [BsonElement("done")]
+        public bool Done { get; set; } // Add a boolean property for completion status
 
     }
 }
